@@ -16,10 +16,10 @@ router.post('/:channelId/chat/enable', async (req: Request, res: Response) => {
     }
 
     await interactionEngine.enableLiveChat(channelId, chatConfig);
-    res.json({ message: 'Live chat enabled successfully' });
+    return res.json({ message: 'Live chat enabled successfully' });
   } catch (error) {
     console.error('Error enabling live chat:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to enable live chat',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -46,10 +46,10 @@ router.post('/:channelId/chat/message', async (req: Request, res: Response) => {
       viewerId
     );
 
-    res.json(chatMessage);
+    return res.json(chatMessage);
   } catch (error) {
     console.error('Error sending chat message:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to send chat message',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -71,10 +71,10 @@ router.post('/:channelId/polls', async (req: Request, res: Response) => {
     }
 
     const poll = await interactionEngine.createPoll(channelId, pollRequest);
-    res.json(poll);
+    return res.json(poll);
   } catch (error) {
     console.error('Error creating poll:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to create poll',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -92,10 +92,10 @@ router.post('/polls/:pollId/vote', async (req: Request, res: Response) => {
     }
 
     await interactionEngine.votePoll(pollId, viewerId, optionIndex);
-    res.json({ message: 'Vote recorded successfully' });
+    return res.json({ message: 'Vote recorded successfully' });
   } catch (error) {
     console.error('Error voting on poll:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to vote on poll',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -117,10 +117,10 @@ router.post('/:channelId/content/vote', async (req: Request, res: Response) => {
     }
 
     await interactionEngine.voteContent(channelId, viewerId, { contentId, voteType });
-    res.json({ message: 'Content vote recorded successfully' });
+    return res.json({ message: 'Content vote recorded successfully' });
   } catch (error) {
     console.error('Error voting on content:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to vote on content',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -142,10 +142,10 @@ router.post('/:channelId/social/integrate', async (req: Request, res: Response) 
     }
 
     await interactionEngine.integrateSocialFeed(channelId, platforms);
-    res.json({ message: 'Social feed integrated successfully' });
+    return res.json({ message: 'Social feed integrated successfully' });
   } catch (error) {
     console.error('Error integrating social feed:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to integrate social feed',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -163,10 +163,10 @@ router.post('/:channelId/social/items', async (req: Request, res: Response) => {
     }
 
     const item = await interactionEngine.addSocialFeedItem(channelId, feedItem);
-    res.json(item);
+    return res.json(item);
   } catch (error) {
     console.error('Error adding social feed item:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to add social feed item',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -188,10 +188,10 @@ router.post('/:channelId/effects/trigger', async (req: Request, res: Response) =
     }
 
     await interactionEngine.triggerEffect(channelId, { viewerId, effectId });
-    res.json({ message: 'Effect triggered successfully' });
+    return res.json({ message: 'Effect triggered successfully' });
   } catch (error) {
     console.error('Error triggering effect:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to trigger effect',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -208,10 +208,10 @@ router.get('/:channelId/viewers/:viewerId/points', async (req: Request, res: Res
     }
 
     const points = await interactionEngine.getViewerPoints(channelId, viewerId);
-    res.json(points);
+    return res.json(points);
   } catch (error) {
     console.error('Error getting viewer points:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to get viewer points',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -228,10 +228,10 @@ router.get('/:channelId/config', async (req: Request, res: Response) => {
     }
 
     const config = await interactionEngine.getInteractionConfig(channelId);
-    res.json(config);
+    return res.json(config);
   } catch (error) {
     console.error('Error getting interaction config:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to get interaction config',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -249,10 +249,10 @@ router.put('/:channelId/config', async (req: Request, res: Response) => {
     }
 
     const config = await interactionEngine.updateInteractionConfig(channelId, updates);
-    res.json(config);
+    return res.json(config);
   } catch (error) {
     console.error('Error updating interaction config:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to update interaction config',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -273,10 +273,10 @@ router.get('/:channelId/metrics', async (req: Request, res: Response) => {
     const end = endTime ? new Date(endTime as string) : undefined;
 
     const metrics = await interactionEngine.getInteractionMetrics(channelId, start, end);
-    res.json(metrics);
+    return res.json(metrics);
   } catch (error) {
     console.error('Error getting interaction metrics:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to get interaction metrics',
       details: error instanceof Error ? error.message : 'Unknown error'
     });

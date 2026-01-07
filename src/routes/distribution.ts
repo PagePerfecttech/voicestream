@@ -55,7 +55,7 @@ router.get('/:channelId/platforms', async (req: Request, res: Response) => {
 
   } catch (error) {
     logger.error('Failed to get platforms:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: error instanceof Error ? error.message : 'Failed to get platforms'
     });
   }
@@ -282,14 +282,14 @@ router.post('/:channelId/platforms/:platformId/adapt-config', async (req: Reques
 
     const adaptedConfig = await distributionEngine.adaptStreamForPlatform(channelId, platformId, baseConfig);
     
-    res.json({
+    return res.json({
       success: true,
       data: adaptedConfig
     });
 
   } catch (error) {
     logger.error('Failed to adapt stream config:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: error instanceof Error ? error.message : 'Failed to adapt stream configuration'
     });
   }

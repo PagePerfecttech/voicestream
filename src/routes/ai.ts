@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { AIEngine } from '../services/AIEngine';
-import { body, param, query, validationResult } from 'express-validator';
+const { body, param, query, validationResult } = require('express-validator');
 
 const router = Router();
 const aiEngine = AIEngine.getInstance();

@@ -134,7 +134,7 @@ router.post('/bulk/delete', async (req, res) => {
 
     const result = await channelManager.bulkDeleteChannels(clientId, request);
     
-    res.status(202).json({
+    return res.status(202).json({
       message: 'Bulk delete operation initiated',
       operationId: result.operationId,
       result
