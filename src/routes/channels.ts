@@ -15,7 +15,7 @@ router.get('/client/:clientId', async (req, res) => {
   try {
     const { clientId } = req.params;
     const channels = await channelManager.getChannelsByClient(clientId);
-    res.json({ success: true, data: channels });
+    return res.json({ success: true, data: channels });
   } catch (error) {
     logger.error('Error fetching channels:', error);
     return res.status(500).json({ success: false, error: 'Failed to fetch channels' });
@@ -27,7 +27,7 @@ router.get('/:channelId', async (req, res) => {
   try {
     const { channelId } = req.params;
     const channel = await channelManager.getChannel(channelId);
-    res.json({ success: true, data: channel });
+    return res.json({ success: true, data: channel });
   } catch (error) {
     logger.error('Error fetching channel:', error);
     return res.status(404).json({ success: false, error: 'Channel not found' });
@@ -42,7 +42,7 @@ router.get('/:channelId/status', async (req, res) => {
     const metrics = await streamManager.getOutputMetrics(channelId);
     const realtimeMetrics = await analyticsEngine.getRealtimeMetrics(channelId);
     
-    res.json({ 
+    return res.json({ 
       success: true, 
       data: {
         status,
@@ -102,7 +102,7 @@ router.put('/:channelId', async (req, res) => {
     const { channelId } = req.params;
     const updates = req.body as UpdateChannelRequest;
     const channel = await channelManager.updateChannel(channelId, updates);
-    res.json({ success: true, data: channel });
+    return res.json({ success: true, data: channel });
   } catch (error) {
     logger.error('Error updating channel:', error);
     return res.status(400).json({ success: false, error: 'Failed to update channel' });
@@ -114,7 +114,7 @@ router.post('/:channelId/start', async (req, res) => {
   try {
     const { channelId } = req.params;
     await channelManager.startChannel(channelId);
-    res.json({ success: true, message: 'Channel start initiated' });
+    return res.json({ success: true, message: 'Channel start initiated' });
   } catch (error) {
     logger.error('Error starting channel:', error);
     return res.status(500).json({ success: false, error: 'Failed to start channel' });
@@ -126,7 +126,7 @@ router.post('/:channelId/stop', async (req, res) => {
   try {
     const { channelId } = req.params;
     await channelManager.stopChannel(channelId);
-    res.json({ success: true, message: 'Channel stopped' });
+    return res.json({ success: true, message: 'Channel stopped' });
   } catch (error) {
     logger.error('Error stopping channel:', error);
     return res.status(500).json({ success: false, error: 'Failed to stop channel' });
@@ -138,7 +138,7 @@ router.post('/:channelId/restart', async (req, res) => {
   try {
     const { channelId } = req.params;
     await channelManager.restartChannel(channelId);
-    res.json({ success: true, message: 'Channel restart initiated' });
+    return res.json({ success: true, message: 'Channel restart initiated' });
   } catch (error) {
     logger.error('Error restarting channel:', error);
     return res.status(500).json({ success: false, error: 'Failed to restart channel' });
@@ -150,7 +150,7 @@ router.delete('/:channelId', async (req, res) => {
   try {
     const { channelId } = req.params;
     await channelManager.deleteChannel(channelId);
-    res.json({ success: true, message: 'Channel deleted' });
+    return res.json({ success: true, message: 'Channel deleted' });
   } catch (error) {
     logger.error('Error deleting channel:', error);
     return res.status(500).json({ success: false, error: 'Failed to delete channel' });
@@ -162,7 +162,7 @@ router.post('/:channelId/test-rtmp', async (req, res) => {
   try {
     const { channelId } = req.params;
     const results = await channelManager.testRTMPConnectivity(channelId);
-    res.json({ success: true, data: results });
+    return res.json({ success: true, data: results });
   } catch (error) {
     logger.error('Error testing RTMP connectivity:', error);
     return res.status(500).json({ success: false, error: 'Failed to test RTMP connectivity' });

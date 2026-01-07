@@ -29,7 +29,7 @@ router.post('/bulk/start', async (req, res) => {
 
     const result = await channelManager.bulkStartChannels(clientId, request);
     
-    res.status(202).json({
+    return res.status(202).json({
       message: 'Bulk start operation initiated',
       operationId: result.operationId,
       result
@@ -37,7 +37,7 @@ router.post('/bulk/start', async (req, res) => {
 
   } catch (error: any) {
     logger.error('Bulk start channels failed', { error: error.message });
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -64,7 +64,7 @@ router.post('/bulk/stop', async (req, res) => {
 
     const result = await channelManager.bulkStopChannels(clientId, request);
     
-    res.status(202).json({
+    return res.status(202).json({
       message: 'Bulk stop operation initiated',
       operationId: result.operationId,
       result
@@ -72,7 +72,7 @@ router.post('/bulk/stop', async (req, res) => {
 
   } catch (error: any) {
     logger.error('Bulk stop channels failed', { error: error.message });
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -99,7 +99,7 @@ router.post('/bulk/restart', async (req, res) => {
 
     const result = await channelManager.bulkRestartChannels(clientId, request);
     
-    res.status(202).json({
+    return res.status(202).json({
       message: 'Bulk restart operation initiated',
       operationId: result.operationId,
       result
@@ -155,7 +155,7 @@ router.get('/bulk/status/:operationId', async (req, res) => {
     
     const result = await channelManager.getBulkOperationStatus(operationId);
     
-    res.json(result);
+    return res.json(result);
 
   } catch (error: any) {
     logger.error('Get bulk operation status failed', { error: error.message });
@@ -170,7 +170,7 @@ router.get('/resources/constraints', async (_req, res) => {
   try {
     const constraints = await channelManager.getResourceConstraints();
     
-    res.json(constraints);
+    return res.json(constraints);
 
   } catch (error: any) {
     logger.error('Get resource constraints failed', { error: error.message });
@@ -196,7 +196,7 @@ router.get('/resources/availability', async (req, res) => {
 
     const available = await channelManager.checkResourceAvailability(clientId, operationType);
     
-    res.json({ available });
+    return res.json({ available });
 
   } catch (error: any) {
     logger.error('Check resource availability failed', { error: error.message });

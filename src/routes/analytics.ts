@@ -42,7 +42,7 @@ router.get('/channels/:channelId/realtime', async (req: Request, res: Response) 
     
     const metrics = await analyticsEngine.getRealtimeMetrics(channelId);
     
-    res.json(metrics);
+    return res.json(metrics);
   } catch (error) {
     console.error('Error getting realtime metrics:', error);
     return res.status(500).json({ 
@@ -78,7 +78,7 @@ router.post('/channels/:channelId/reports', async (req: Request, res: Response) 
     
     const report = await analyticsEngine.generateReport(channelId, reportType, date);
     
-    res.json(report);
+    return res.json(report);
   } catch (error) {
     console.error('Error generating report:', error);
     return res.status(500).json({ 
@@ -113,7 +113,7 @@ router.get('/channels/:channelId/reports/:reportType/:reportDate', async (req: R
     
     const report = await analyticsEngine.generateReport(channelId, reportType as any, date);
     
-    res.json(report);
+    return res.json(report);
   } catch (error) {
     console.error('Error getting report:', error);
     return res.status(500).json({ 
@@ -159,7 +159,7 @@ router.post('/query', async (req: Request, res: Response) => {
     
     const results = await analyticsEngine.queryAnalytics(query);
     
-    res.json(results);
+    return res.json(results);
   } catch (error) {
     console.error('Error querying analytics:', error);
     return res.status(500).json({ 
@@ -186,7 +186,7 @@ router.post('/channels/:channelId/metrics/:periodType', async (req: Request, res
     
     await analyticsEngine.updateChannelMetrics(channelId, periodType as any);
     
-    res.json({ success: true });
+    return res.json({ success: true });
   } catch (error) {
     console.error('Error updating channel metrics:', error);
     return res.status(500).json({ 
@@ -213,7 +213,7 @@ router.delete('/cleanup', async (req: Request, res: Response) => {
     
     await analyticsEngine.cleanupOldData(days);
     
-    res.json({ 
+    return res.json({ 
       success: true, 
       message: `Cleaned up analytics data older than ${days} days` 
     });
