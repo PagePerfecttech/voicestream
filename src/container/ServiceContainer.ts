@@ -7,7 +7,7 @@ import { AIEngine } from '../services/AIEngine';
 import { DistributionEngine } from '../services/DistributionEngine';
 import { InteractionEngine } from '../services/InteractionEngine';
 import { ConcurrentOperationsManager } from '../services/ConcurrentOperationsManager';
-import { PreviewPlayer } from '../services/PreviewPlayer';
+import { PreviewPlayerService } from '../services/PreviewPlayer';
 import { RealtimeNotificationService } from '../services/RealtimeNotificationService';
 import { ErrorRecoveryService } from '../services/ErrorRecoveryService';
 import { CircuitBreaker } from '../services/CircuitBreaker';
@@ -30,7 +30,7 @@ export interface ServiceDependencies {
   distributionEngine: DistributionEngine;
   interactionEngine: InteractionEngine;
   concurrentOperationsManager: ConcurrentOperationsManager;
-  previewPlayer: PreviewPlayer;
+  previewPlayer: PreviewPlayerService;
   realtimeNotificationService: RealtimeNotificationService;
   errorRecoveryService: ErrorRecoveryService;
   circuitBreaker: CircuitBreaker;
@@ -86,7 +86,7 @@ export class ServiceContainer {
       this.services.aiEngine = new AIEngine();
       this.services.distributionEngine = new DistributionEngine(knex);
       this.services.interactionEngine = new InteractionEngine();
-      this.services.previewPlayer = new PreviewPlayer();
+      this.services.previewPlayer = new PreviewPlayerService();
 
       // Initialize managers that depend on engines
       this.services.channelManager = new ChannelManager();

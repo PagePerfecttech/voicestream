@@ -31,10 +31,6 @@ export interface PlayerEvents {
   onMetricsUpdate?: (metrics: StreamMetrics) => void;
 }
 
-/**
- * Preview Player Service for HLS stream playback
- * Provides server-side utilities for HLS stream management and client-side integration
- */
 export class PreviewPlayerService {
   private activeStreams: Map<string, PreviewPlayerConfig> = new Map();
   private streamMetrics: Map<string, StreamMetrics> = new Map();

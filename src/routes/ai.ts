@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { AIEngine } from '../services/AIEngine';
-import { body, param, query, validationResult } from 'express-validator';
+import validator from 'express-validator';
+const { body, param, query, validationResult } = validator;
 
 const router = Router();
 const aiEngine = AIEngine.getInstance();
@@ -39,13 +40,13 @@ router.post('/optimize-schedule',
 
       const optimizedSchedule = await aiEngine.optimizeSchedule(channelId, content, request);
       
-      res.json({
+      return res.json({
         success: true,
         data: optimizedSchedule
       });
     } catch (error) {
       console.error('Schedule optimization error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to optimize schedule'
       });
@@ -72,13 +73,13 @@ router.get('/churn-prediction/:channelId',
       
       const churnPrediction = await aiEngine.predictViewerChurn(channelId);
       
-      res.json({
+      return res.json({
         success: true,
         data: churnPrediction
       });
     } catch (error) {
       console.error('Churn prediction error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to predict viewer churn'
       });
@@ -109,13 +110,13 @@ router.post('/categorize-content',
       
       const categories = await aiEngine.categorizeContent(mediaItem);
       
-      res.json({
+      return res.json({
         success: true,
         data: categories
       });
     } catch (error) {
       console.error('Content categorization error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to categorize content'
       });
@@ -155,13 +156,13 @@ router.get('/recommendations/:channelId',
         recommendations = recommendations.filter(rec => rec.priority === priority);
       }
       
-      res.json({
+      return res.json({
         success: true,
         data: recommendations
       });
     } catch (error) {
       console.error('Recommendations error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to generate recommendations'
       });
@@ -189,13 +190,13 @@ router.post('/optimize-ad-placement',
       
       const optimization = await aiEngine.optimizeAdPlacement(channelId, contentId);
       
-      res.json({
+      return res.json({
         success: true,
         data: optimization
       });
     } catch (error) {
       console.error('Ad placement optimization error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to optimize ad placement'
       });
@@ -222,13 +223,13 @@ router.get('/viewer-behavior/:channelId',
       
       const analysis = await aiEngine.analyzeViewerBehavior(channelId);
       
-      res.json({
+      return res.json({
         success: true,
         data: analysis
       });
     } catch (error) {
       console.error('Viewer behavior analysis error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to analyze viewer behavior'
       });
@@ -264,13 +265,13 @@ router.put('/recommendations/:recommendationId/status',
           updated_at: new Date()
         });
       
-      res.json({
+      return res.json({
         success: true,
         message: 'Recommendation status updated successfully'
       });
     } catch (error) {
       console.error('Recommendation status update error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to update recommendation status'
       });
@@ -329,15 +330,15 @@ router.get('/analytics/:channelId',
         .orderBy('generated_at', 'desc')
         .limit(5);
       
-      res.json({
+      return res.json({
         success: true,
         data: {
-          analyses: analyses.map(a => ({
+          analyses: analyses.map((a: any) => ({
             ...a,
             results: JSON.parse(a.results),
             recommendations: a.recommendations ? JSON.parse(a.recommendations) : []
           })),
-          recommendations: recommendations.map(r => ({
+          recommendations: recommendations.map((r: any) => ({
             ...r,
             recommendation_data: JSON.parse(r.recommendation_data)
           })),
@@ -345,7 +346,7 @@ router.get('/analytics/:channelId',
             ...churnPrediction,
             prediction_data: JSON.parse(churnPrediction.prediction_data)
           } : null,
-          scheduleOptimizations: scheduleOptimizations.map(s => ({
+          scheduleOptimizations: scheduleOptimizations.map((s: any) => ({
             ...s,
             schedule_data: JSON.parse(s.schedule_data)
           }))
@@ -353,7 +354,7 @@ router.get('/analytics/:channelId',
       });
     } catch (error) {
       console.error('AI analytics error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to retrieve AI analytics'
       });
@@ -407,13 +408,13 @@ router.post('/bulk-analyze',
         results.push(channelResults);
       }
       
-      res.json({
+      return res.json({
         success: true,
         data: results
       });
     } catch (error) {
       console.error('Bulk analysis error:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         error: 'Failed to perform bulk analysis'
       });

@@ -18,7 +18,7 @@ router.get('/client/:clientId', async (req, res) => {
     res.json({ success: true, data: channels });
   } catch (error) {
     logger.error('Error fetching channels:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch channels' });
+    return res.status(500).json({ success: false, error: 'Failed to fetch channels' });
   }
 });
 
@@ -30,7 +30,7 @@ router.get('/:channelId', async (req, res) => {
     res.json({ success: true, data: channel });
   } catch (error) {
     logger.error('Error fetching channel:', error);
-    res.status(404).json({ success: false, error: 'Channel not found' });
+    return res.status(404).json({ success: false, error: 'Channel not found' });
   }
 });
 
@@ -52,7 +52,7 @@ router.get('/:channelId/status', async (req, res) => {
     });
   } catch (error) {
     logger.error('Error fetching channel status:', error);
-    res.status(500).json({ success: false, error: 'Failed to fetch channel status' });
+    return res.status(500).json({ success: false, error: 'Failed to fetch channel status' });
   }
 });
 
@@ -89,10 +89,10 @@ router.post('/', async (req, res) => {
   try {
     const { clientId, ...config } = req.body as CreateChannelRequest & { clientId: string };
     const channel = await channelManager.createChannel(clientId, config);
-    res.status(201).json({ success: true, data: channel });
+    return res.status(201).json({ success: true, data: channel });
   } catch (error) {
     logger.error('Error creating channel:', error);
-    res.status(400).json({ success: false, error: 'Failed to create channel' });
+    return res.status(400).json({ success: false, error: 'Failed to create channel' });
   }
 });
 
@@ -105,7 +105,7 @@ router.put('/:channelId', async (req, res) => {
     res.json({ success: true, data: channel });
   } catch (error) {
     logger.error('Error updating channel:', error);
-    res.status(400).json({ success: false, error: 'Failed to update channel' });
+    return res.status(400).json({ success: false, error: 'Failed to update channel' });
   }
 });
 
@@ -117,7 +117,7 @@ router.post('/:channelId/start', async (req, res) => {
     res.json({ success: true, message: 'Channel start initiated' });
   } catch (error) {
     logger.error('Error starting channel:', error);
-    res.status(500).json({ success: false, error: 'Failed to start channel' });
+    return res.status(500).json({ success: false, error: 'Failed to start channel' });
   }
 });
 
@@ -129,7 +129,7 @@ router.post('/:channelId/stop', async (req, res) => {
     res.json({ success: true, message: 'Channel stopped' });
   } catch (error) {
     logger.error('Error stopping channel:', error);
-    res.status(500).json({ success: false, error: 'Failed to stop channel' });
+    return res.status(500).json({ success: false, error: 'Failed to stop channel' });
   }
 });
 
@@ -141,7 +141,7 @@ router.post('/:channelId/restart', async (req, res) => {
     res.json({ success: true, message: 'Channel restart initiated' });
   } catch (error) {
     logger.error('Error restarting channel:', error);
-    res.status(500).json({ success: false, error: 'Failed to restart channel' });
+    return res.status(500).json({ success: false, error: 'Failed to restart channel' });
   }
 });
 
@@ -153,7 +153,7 @@ router.delete('/:channelId', async (req, res) => {
     res.json({ success: true, message: 'Channel deleted' });
   } catch (error) {
     logger.error('Error deleting channel:', error);
-    res.status(500).json({ success: false, error: 'Failed to delete channel' });
+    return res.status(500).json({ success: false, error: 'Failed to delete channel' });
   }
 });
 
@@ -165,7 +165,7 @@ router.post('/:channelId/test-rtmp', async (req, res) => {
     res.json({ success: true, data: results });
   } catch (error) {
     logger.error('Error testing RTMP connectivity:', error);
-    res.status(500).json({ success: false, error: 'Failed to test RTMP connectivity' });
+    return res.status(500).json({ success: false, error: 'Failed to test RTMP connectivity' });
   }
 });
 

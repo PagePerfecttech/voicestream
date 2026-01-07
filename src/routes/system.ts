@@ -14,7 +14,7 @@ const alertingService = AlertingService.getInstance();
 const serviceContainer = ServiceContainer.getInstance();
 
 // Get comprehensive system health status
-router.get('/health', asyncHandler(async (req: Request, res: Response) => {
+router.get('/health', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -30,7 +30,7 @@ router.get('/health', asyncHandler(async (req: Request, res: Response) => {
   const recoveryStats = errorRecoveryService.getRecoveryStats();
   const comprehensiveHealth = await healthMonitor.getSystemHealth();
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       status: 'operational',
@@ -59,7 +59,7 @@ router.get('/health', asyncHandler(async (req: Request, res: Response) => {
 router.get('/performance', asyncHandler(async (_req: Request, res: Response) => {
   const metrics = await performanceMonitor.getMetrics();
   
-  res.json({
+  return res.json({
     success: true,
     data: metrics
   });
@@ -93,7 +93,7 @@ router.get('/services', asyncHandler(async (_req: Request, res: Response) => {
     }
   }
   
-  res.json({
+  return res.json({
     success: true,
     data: {
       initialized: true,
@@ -106,7 +106,7 @@ router.get('/services', asyncHandler(async (_req: Request, res: Response) => {
 router.post('/monitoring/start', asyncHandler(async (_req: Request, res: Response) => {
   healthMonitor.start();
   
-  res.json({
+  return res.json({
     success: true,
     message: 'Health monitoring started'
   });
@@ -116,14 +116,14 @@ router.post('/monitoring/start', asyncHandler(async (_req: Request, res: Respons
 router.post('/monitoring/stop', asyncHandler(async (_req: Request, res: Response) => {
   healthMonitor.stop();
   
-  res.json({
+  return res.json({
     success: true,
     message: 'Health monitoring stopped'
   });
 }));
 
 // Get detailed system status
-router.get('/status', asyncHandler(async (req: Request, res: Response) => {
+router.get('/status', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -135,14 +135,14 @@ router.get('/status', asyncHandler(async (req: Request, res: Response) => {
 
   const systemStatus = errorRecoveryService.getSystemStatus();
 
-  res.json({
+  return res.json({
     success: true,
     data: systemStatus
   });
 }));
 
 // Get recovery statistics
-router.get('/recovery/stats', asyncHandler(async (req: Request, res: Response) => {
+router.get('/recovery/stats', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -154,7 +154,7 @@ router.get('/recovery/stats', asyncHandler(async (req: Request, res: Response) =
 
   const stats = errorRecoveryService.getRecoveryStats();
 
-  res.json({
+  return res.json({
     success: true,
     data: stats
   });
@@ -174,7 +174,7 @@ router.get('/features/:service/:feature', asyncHandler(async (req: Request, res:
 
   const isAvailable = errorRecoveryService.isFeatureAvailable(service, feature);
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       service,
@@ -198,7 +198,7 @@ router.post('/health/:service', asyncHandler(async (req: Request, res: Response)
 
   const health = await errorRecoveryService.performHealthCheck(service);
 
-  res.json({
+  return res.json({
     success: true,
     data: health
   });
@@ -224,7 +224,7 @@ router.post('/recovery/restart/:service', asyncHandler(async (req: Request, res:
     initiatedBy: req.ip
   });
 
-  res.json({
+  return res.json({
     success: true,
     message: `Manual restart initiated for ${service}`,
     timestamp: new Date().toISOString()
@@ -249,7 +249,7 @@ router.post('/recovery/restore/:service', asyncHandler(async (req: Request, res:
     initiatedBy: req.ip
   });
 
-  res.json({
+  return res.json({
     success: true,
     message: `Manual restore initiated for ${service}`,
     timestamp: new Date().toISOString()
@@ -257,7 +257,7 @@ router.post('/recovery/restore/:service', asyncHandler(async (req: Request, res:
 }));
 
 // Get circuit breaker states
-router.get('/circuit-breakers', asyncHandler(async (req: Request, res: Response) => {
+router.get('/circuit-breakers', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -269,7 +269,7 @@ router.get('/circuit-breakers', asyncHandler(async (req: Request, res: Response)
 
   const systemStatus = errorRecoveryService.getSystemStatus();
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       circuitBreakers: systemStatus.circuitBreakerStates,
@@ -279,7 +279,7 @@ router.get('/circuit-breakers', asyncHandler(async (req: Request, res: Response)
 }));
 
 // Get degraded services
-router.get('/degraded-services', asyncHandler(async (req: Request, res: Response) => {
+router.get('/degraded-services', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -291,7 +291,7 @@ router.get('/degraded-services', asyncHandler(async (req: Request, res: Response
 
   const systemStatus = errorRecoveryService.getSystemStatus();
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       degradedServices: systemStatus.degradedServices,
@@ -301,7 +301,7 @@ router.get('/degraded-services', asyncHandler(async (req: Request, res: Response
 }));
 
 // Get active errors
-router.get('/errors/active', asyncHandler(async (req: Request, res: Response) => {
+router.get('/errors/active', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -313,7 +313,7 @@ router.get('/errors/active', asyncHandler(async (req: Request, res: Response) =>
 
   const systemStatus = errorRecoveryService.getSystemStatus();
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       activeErrors: systemStatus.activeErrors,
@@ -324,7 +324,7 @@ router.get('/errors/active', asyncHandler(async (req: Request, res: Response) =>
 }));
 
 // Get active escalations
-router.get('/escalations/active', asyncHandler(async (req: Request, res: Response) => {
+router.get('/escalations/active', asyncHandler(async (_req: Request, res: Response) => {
   const errorRecoveryService = getErrorRecoveryService();
   
   if (!errorRecoveryService) {
@@ -336,7 +336,7 @@ router.get('/escalations/active', asyncHandler(async (req: Request, res: Respons
 
   const systemStatus = errorRecoveryService.getSystemStatus();
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       activeEscalations: systemStatus.activeEscalations,
@@ -357,7 +357,7 @@ router.get('/alerts', asyncHandler(async (req: Request, res: Response) => {
     alerts = alertingService.getAlertHistory(limit ? parseInt(limit as string) : 100);
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       alerts,
@@ -374,12 +374,12 @@ router.post('/alerts/:alertId/acknowledge', asyncHandler(async (req: Request, re
   const success = alertingService.acknowledgeAlert(alertId, acknowledgedBy || 'system');
 
   if (success) {
-    res.json({
+    return res.json({
       success: true,
       message: 'Alert acknowledged successfully'
     });
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       error: 'Alert not found'
     });
@@ -393,22 +393,22 @@ router.post('/alerts/:alertId/resolve', asyncHandler(async (req: Request, res: R
   const success = await alertingService.resolveAlert(alertId, resolvedBy || 'system');
 
   if (success) {
-    res.json({
+    return res.json({
       success: true,
       message: 'Alert resolved successfully'
     });
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       success: false,
       error: 'Alert not found'
     });
   }
 }));
 
-router.get('/alerts/stats', asyncHandler(async (req: Request, res: Response) => {
+router.get('/alerts/stats', asyncHandler(async (_req: Request, res: Response) => {
   const stats = alertingService.getStats();
 
-  res.json({
+  return res.json({
     success: true,
     data: stats
   });
@@ -425,7 +425,7 @@ router.post('/alerts/test', asyncHandler(async (req: Request, res: Response) => 
     source: 'api-test'
   });
 
-  res.json({
+  return res.json({
     success: true,
     data: alert,
     message: 'Test alert created successfully'

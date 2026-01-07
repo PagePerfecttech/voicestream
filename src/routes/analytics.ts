@@ -22,10 +22,10 @@ router.post('/events', async (req: Request, res: Response) => {
     
     await analyticsEngine.trackViewerEvent(event);
     
-    res.status(201).json({ success: true });
+    return res.status(201).json({ success: true });
   } catch (error) {
     console.error('Error tracking viewer event:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to track viewer event',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -45,7 +45,7 @@ router.get('/channels/:channelId/realtime', async (req: Request, res: Response) 
     res.json(metrics);
   } catch (error) {
     console.error('Error getting realtime metrics:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to get realtime metrics',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -81,7 +81,7 @@ router.post('/channels/:channelId/reports', async (req: Request, res: Response) 
     res.json(report);
   } catch (error) {
     console.error('Error generating report:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to generate report',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -116,7 +116,7 @@ router.get('/channels/:channelId/reports/:reportType/:reportDate', async (req: R
     res.json(report);
   } catch (error) {
     console.error('Error getting report:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to get report',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -162,7 +162,7 @@ router.post('/query', async (req: Request, res: Response) => {
     res.json(results);
   } catch (error) {
     console.error('Error querying analytics:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to query analytics',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -189,7 +189,7 @@ router.post('/channels/:channelId/metrics/:periodType', async (req: Request, res
     res.json({ success: true });
   } catch (error) {
     console.error('Error updating channel metrics:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to update channel metrics',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
@@ -219,7 +219,7 @@ router.delete('/cleanup', async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Error cleaning up analytics data:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Failed to clean up analytics data',
       details: error instanceof Error ? error.message : 'Unknown error'
     });

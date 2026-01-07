@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { MonetizationEngine } from '../services/MonetizationEngine';
-import { body, param, query, validationResult } from 'express-validator';
+import validator from 'express-validator';
+const { body, param, query, validationResult } = validator;
 
 const router = Router();
 const monetizationEngine = MonetizationEngine.getInstance();
@@ -11,7 +12,7 @@ const handleValidationErrors = (req: Request, res: Response, next: any) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  next();
+  return next();
 };
 
 /**
@@ -25,10 +26,10 @@ router.get('/:channelId/config',
     try {
       const { channelId } = req.params;
       const config = await monetizationEngine.getMonetizationConfig(channelId);
-      res.json(config);
+      return res.json(config);
     } catch (error) {
       console.error('Error getting monetization config:', error);
-      res.status(500).json({ error: 'Failed to get monetization configuration' });
+      return res.status(500).json({ error: 'Failed to get monetization configuration' });
     }
   }
 );
@@ -56,10 +57,10 @@ router.put('/:channelId/config',
       const { channelId } = req.params;
       const updates = req.body;
       const config = await monetizationEngine.updateMonetizationConfig(channelId, updates);
-      res.json(config);
+      return res.json(config);
     } catch (error) {
       console.error('Error updating monetization config:', error);
-      res.status(500).json({ error: 'Failed to update monetization configuration' });
+      return res.status(500).json({ error: 'Failed to update monetization configuration' });
     }
   }
 );
@@ -88,10 +89,10 @@ router.post('/:channelId/ad-breaks',
       };
       
       const adBreak = await monetizationEngine.scheduleAdBreak(channelId, adBreakData);
-      res.status(201).json(adBreak);
+      return res.status(201).json(adBreak);
     } catch (error) {
       console.error('Error scheduling ad break:', error);
-      res.status(500).json({ error: 'Failed to schedule ad break' });
+      return res.status(500).json({ error: 'Failed to schedule ad break' });
     }
   }
 );
@@ -119,10 +120,10 @@ router.post('/ad-networks',
         averageCPM: 0
       }, credentials);
       
-      res.status(201).json(network);
+      return res.status(201).json(network);
     } catch (error) {
       console.error('Error integrating ad network:', error);
-      res.status(500).json({ error: 'Failed to integrate ad network' });
+      return res.status(500).json({ error: 'Failed to integrate ad network' });
     }
   }
 );
@@ -156,10 +157,10 @@ router.post('/:channelId/ppv-events',
       };
       
       const ppvEvent = await monetizationEngine.createPPVEvent(eventData);
-      res.status(201).json(ppvEvent);
+      return res.status(201).json(ppvEvent);
     } catch (error) {
       console.error('Error creating PPV event:', error);
-      res.status(500).json({ error: 'Failed to create PPV event' });
+      return res.status(500).json({ error: 'Failed to create PPV event' });
     }
   }
 );
@@ -179,10 +180,10 @@ router.post('/ppv-events/:eventId/purchase',
       const { viewerId, paymentMethodId } = req.body;
       
       const purchase = await monetizationEngine.purchasePPVEvent(viewerId, eventId, paymentMethodId);
-      res.status(201).json(purchase);
+      return res.status(201).json(purchase);
     } catch (error) {
       console.error('Error purchasing PPV event:', error);
-      res.status(400).json({ error: error.message || 'Failed to purchase PPV event' });
+      return res.status(400).json({ error: (error as Error).message || 'Failed to purchase PPV event' });
     }
   }
 );
@@ -199,10 +200,10 @@ router.get('/:channelId/access-control/:viewerId',
     try {
       const { channelId, viewerId } = req.params;
       const accessResult = await monetizationEngine.enforceSubscriptionAccess(channelId, viewerId);
-      res.json(accessResult);
+      return res.json(accessResult);
     } catch (error) {
       console.error('Error checking access control:', error);
-      res.status(500).json({ error: 'Failed to check access control' });
+      return res.status(500).json({ error: 'Failed to check access control' });
     }
   }
 );
@@ -227,10 +228,10 @@ router.get('/:channelId/revenue-report',
         new Date(endDate as string)
       );
       
-      res.json(report);
+      return res.json(report);
     } catch (error) {
       console.error('Error generating revenue report:', error);
-      res.status(500).json({ error: 'Failed to generate revenue report' });
+      return res.status(500).json({ error: 'Failed to generate revenue report' });
     }
   }
 );
@@ -255,10 +256,10 @@ router.post('/:channelId/revenue',
       const { source, amount, ...metadata } = req.body;
       
       const revenueRecord = await monetizationEngine.trackRevenue(channelId, source, amount, metadata);
-      res.status(201).json(revenueRecord);
+      return res.status(201).json(revenueRecord);
     } catch (error) {
       console.error('Error tracking revenue:', error);
-      res.status(500).json({ error: 'Failed to track revenue' });
+      return res.status(500).json({ error: 'Failed to track revenue' });
     }
   }
 );
