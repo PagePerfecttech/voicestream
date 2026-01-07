@@ -25,14 +25,14 @@ router.post('/:channelId/platforms', async (req: Request, res: Response) => {
 
     const platform = await distributionEngine.addPlatform(channelId, platformData);
     
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: platform
     });
 
   } catch (error) {
     logger.error('Failed to add platform:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: error instanceof Error ? error.message : 'Failed to add platform'
     });
   }
@@ -48,7 +48,7 @@ router.get('/:channelId/platforms', async (req: Request, res: Response) => {
     
     const platforms = await distributionEngine.getPlatforms(channelId);
     
-    res.json({
+    return res.json({
       success: true,
       data: platforms
     });

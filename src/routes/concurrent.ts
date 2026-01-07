@@ -142,7 +142,7 @@ router.post('/bulk/delete', async (req, res) => {
 
   } catch (error: any) {
     logger.error('Bulk delete channels failed', { error: error.message });
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -159,7 +159,7 @@ router.get('/bulk/status/:operationId', async (req, res) => {
 
   } catch (error: any) {
     logger.error('Get bulk operation status failed', { error: error.message });
-    res.status(404).json({ error: error.message });
+    return res.status(404).json({ error: error.message });
   }
 });
 
@@ -174,7 +174,7 @@ router.get('/resources/constraints', async (_req, res) => {
 
   } catch (error: any) {
     logger.error('Get resource constraints failed', { error: error.message });
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -200,7 +200,7 @@ router.get('/resources/availability', async (req, res) => {
 
   } catch (error: any) {
     logger.error('Check resource availability failed', { error: error.message });
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
