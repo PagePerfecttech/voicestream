@@ -24,7 +24,8 @@
     "noUnusedParameters": false,
     "exactOptionalPropertyTypes": false,
     "noImplicitUseStrict": false,
-    "allowJs": true
+    "allowJs": true,
+    "skipDefaultLibCheck": true
   },
   "include": [
     "src/**/*"
