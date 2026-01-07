@@ -12,13 +12,21 @@ export async function initializeRedis(): Promise<void> {
   }
 
   try {
+    console.log('🔍 Initializing Redis connection...');
+    
     const redisConfig: any = {
-      url: config.redis.url,
       socket: {
         host: config.redis.host,
         port: config.redis.port,
-        connectTimeout: 5000, // 5 second timeout
+        connectTimeout: 10000, // 10 second timeout
         lazyConnect: true, // Don't connect immediately
+        reconnectStrategy: (retries: number) => {
+          if (retries > 3) {
+            console.error('❌ Redis max reconnection attempts reached');
+            return false;
+          }
+          return Math.min(retries * 50, 500);
+        }
       },
     };
     
@@ -42,13 +50,18 @@ export async function initializeRedis(): Promise<void> {
     });
 
     redisClient.on('disconnect', () => {
-      console.log('Redis connection disconnected');
+      console.log('⚠️ Redis connection disconnected');
+    });
+
+    redisClient.on('reconnecting', () => {
+      console.log('🔄 Redis reconnecting...');
     });
 
     // Try to connect with timeout
+    console.log(`🔗 Connecting to Redis at ${config.redis.host}:${config.redis.port}...`);
     const connectPromise = redisClient.connect();
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Redis connection timeout')), 5000);
+      setTimeout(() => reject(new Error('Redis connection timeout')), 10000);
     });
 
     await Promise.race([connectPromise, timeoutPromise]);
@@ -62,6 +75,12 @@ export async function initializeRedis(): Promise<void> {
     // In test environment, don't fail completely - allow tests to run without Redis
     if (process.env.NODE_ENV === 'test') {
       console.warn('⚠️ Continuing tests without Redis connection');
+      return;
+    }
+    
+    // In production, continue without Redis but log the error
+    if (process.env.NODE_ENV === 'production') {
+      console.warn('⚠️ Continuing without Redis - some features may be limited');
       return;
     }
     
