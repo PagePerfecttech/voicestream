@@ -22,7 +22,9 @@
     "test:neon": "ts-node scripts/test-neon-connection.ts",
     "health-check": "bash scripts/health-check.sh",
     "deploy": "bash scripts/deploy.sh",
-    "deploy:prod": "bash scripts/deploy.sh production"
+    "deploy:prod": "bash scripts/deploy.sh production",
+    "start:runtime": "node start-production.js",
+    "start:ts": "ts-node --transpile-only src/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -39,6 +41,8 @@
     "knex": "^3.0.1",
     "pg": "^8.11.3",
     "redis": "^4.6.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "uuid": "^9.0.1",
     "winston": "^3.11.0",
     "ws": "^8.14.2"

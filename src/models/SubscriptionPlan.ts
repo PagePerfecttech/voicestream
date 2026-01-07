@@ -149,11 +149,11 @@ export class SubscriptionPlanModel {
       .first();
       
     const plan = await this.findById(planId);
-    const totalRevenue = (stats?.active_count || 0) * plan.monthlyPrice;
+    const totalRevenue = ((stats as any)?.active_count || 0) * plan.monthlyPrice;
     
     return {
-      activeSubscriptions: stats?.active_count || 0,
-      trialSubscriptions: stats?.trial_count || 0,
+      activeSubscriptions: (stats as any)?.active_count || 0,
+      trialSubscriptions: (stats as any)?.trial_count || 0,
       totalRevenue,
     };
   }

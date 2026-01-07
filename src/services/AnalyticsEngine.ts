@@ -177,8 +177,8 @@ export class AnalyticsEngine {
       currentViewers,
       peakViewers,
       averageWatchTime: Math.round(avgWatchTime),
-      totalViews: parseInt(todayViews?.total_views || '0'),
-      uniqueViewers: parseInt(todayViews?.unique_viewers || '0'),
+      totalViews: parseInt((todayViews as any)?.total_views || '0'),
+      uniqueViewers: parseInt((todayViews as any)?.unique_viewers || '0'),
       geographicDistribution,
       deviceBreakdown,
       recentEvents: mappedEvents,
@@ -499,13 +499,13 @@ export class AnalyticsEngine {
       .orderBy('hour');
     
     return {
-      totalViews: parseInt(sessionMetrics?.total_views || '0'),
-      uniqueViewers: parseInt(sessionMetrics?.unique_viewers || '0'),
-      totalWatchTime: parseInt(sessionMetrics?.total_watch_time || '0'),
-      averageWatchTime: parseFloat(sessionMetrics?.average_watch_time || '0'),
+      totalViews: parseInt((sessionMetrics as any)?.total_views || '0'),
+      uniqueViewers: parseInt((sessionMetrics as any)?.unique_viewers || '0'),
+      totalWatchTime: parseInt((sessionMetrics as any)?.total_watch_time || '0'),
+      averageWatchTime: parseFloat((sessionMetrics as any)?.average_watch_time || '0'),
       peakConcurrentViewers: parseInt(peakViewers?.peak || '0'),
-      totalInteractions: parseInt(sessionMetrics?.total_interactions || '0'),
-      chatMessages: parseInt(sessionMetrics?.chat_messages || '0'),
+      totalInteractions: parseInt((sessionMetrics as any)?.total_interactions || '0'),
+      chatMessages: parseInt((sessionMetrics as any)?.chat_messages || '0'),
       socialShares: 0, // TODO: Implement social sharing tracking
       topCountries: topCountries.map(row => ({
         country: String(row.country),
@@ -569,9 +569,9 @@ export class AnalyticsEngine {
     
     return {
       concurrent_viewers: parseInt(concurrentViewers?.count as string || '0'),
-      total_views: parseInt(sessionMetrics?.total_views || '0'),
-      unique_viewers: parseInt(sessionMetrics?.unique_viewers || '0'),
-      average_watch_time: parseFloat(sessionMetrics?.average_watch_time || '0'),
+      total_views: parseInt((sessionMetrics as any)?.total_views || '0'),
+      unique_viewers: parseInt((sessionMetrics as any)?.unique_viewers || '0'),
+      average_watch_time: parseFloat((sessionMetrics as any)?.average_watch_time || '0'),
       peak_viewers: parseInt(concurrentViewers?.count as string || '0'), // Simplified for now
       chat_messages: 0, // TODO: Calculate from events
       poll_participation: 0,
