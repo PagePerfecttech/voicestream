@@ -110,8 +110,8 @@ cd /opt/cloud-playout
 
 ### Clone your repository:
 ```bash
-# If using Git (replace with your repository URL)
-git clone https://github.com/your-username/cloud-playout.git .
+# Clone the voicestream repository
+git clone https://github.com/PagePerfecttech/voicestream.git .
 
 # Or upload your files using SCP from your local machine:
 # scp -r /path/to/your/project/* username@109.199.120.192:/opt/cloud-playout/

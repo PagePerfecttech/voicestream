@@ -25,7 +25,7 @@
 ### Step 1: Server Preparation
 ```bash
 # Run this on your server (109.199.120.192)
-wget https://raw.githubusercontent.com/your-repo/cloud-playout/main/quick-deploy.sh
+wget https://raw.githubusercontent.com/PagePerfecttech/voicestream/main/quick-deploy.sh
 chmod +x quick-deploy.sh
 ./quick-deploy.sh
 ```
